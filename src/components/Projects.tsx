@@ -1,7 +1,12 @@
-import { ExternalLink, Github } from "lucide-react";
+import { ExternalLink, Github, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const Projects = () => {
+  const [activeFilter, setActiveFilter] = useState("Все");
+
+  const filters = ["Все", "Frontend", "Backend", "Fullstack", "Mobile"];
+
   const projects = [
     {
       title: "E-commerce Platform",
@@ -10,6 +15,7 @@ const Projects = () => {
       image:
         "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop",
       tech: ["React", "Node.js", "PostgreSQL", "Stripe"],
+      category: "Fullstack",
       github: "#",
       demo: "#",
     },
@@ -20,6 +26,7 @@ const Projects = () => {
       image:
         "https://images.unsplash.com/photo-1611224923853-70c4ddc2b5b1?w=600&h=400&fit=crop",
       tech: ["Next.js", "TypeScript", "Prisma", "WebSocket"],
+      category: "Frontend",
       github: "#",
       demo: "#",
     },
@@ -30,6 +37,7 @@ const Projects = () => {
       image:
         "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
       tech: ["React", "D3.js", "Python", "FastAPI"],
+      category: "Fullstack",
       github: "#",
       demo: "#",
     },
@@ -40,10 +48,27 @@ const Projects = () => {
       image:
         "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600&h=400&fit=crop",
       tech: ["React Native", "GraphQL", "MongoDB", "Redis"],
+      category: "Mobile",
+      github: "#",
+      demo: "#",
+    },
+    {
+      title: "REST API Server",
+      description:
+        "Высокопроизводительный API сервер с JWT авторизацией и кэшированием",
+      image:
+        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
+      tech: ["Node.js", "Express", "Redis", "JWT"],
+      category: "Backend",
       github: "#",
       demo: "#",
     },
   ];
+
+  const filteredProjects =
+    activeFilter === "Все"
+      ? projects
+      : projects.filter((project) => project.category === activeFilter);
 
   return (
     <section className="py-20 bg-white px-6">
@@ -58,8 +83,26 @@ const Projects = () => {
           </p>
         </div>
 
+        {/* Фильтры проектов */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          <Filter className="w-5 h-5 text-[#9b87f5] mt-2 mr-2" />
+          {filters.map((filter) => (
+            <button
+              key={filter}
+              onClick={() => setActiveFilter(filter)}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
+                activeFilter === filter
+                  ? "bg-[#9b87f5] text-white shadow-lg"
+                  : "bg-gray-100 text-gray-700 hover:bg-[#F1F0FB] hover:text-[#9b87f5]"
+              }`}
+            >
+              {filter}
+            </button>
+          ))}
+        </div>
+
         <div className="grid md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
+          {filteredProjects.map((project, index) => (
             <div
               key={index}
               className="bg-white rounded-3xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
@@ -71,6 +114,11 @@ const Projects = () => {
                   className="w-full h-64 object-cover transition-transform duration-300 hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-[#9b87f5] text-white text-sm font-medium rounded-full">
+                    {project.category}
+                  </span>
+                </div>
               </div>
 
               <div className="p-8">
